@@ -72,6 +72,18 @@ namespace ProviderManage.Repositories
             }
 
             return Task.CompletedTask;
+
+        }
+        
+    public Task<IEnumerable<Provider>>
+    SearchProvidersAsync(string providerName)
+        {
+            var result = _providers.Where(x =>
+                x.ProviderName.Contains(
+                    providerName,
+                    StringComparison.OrdinalIgnoreCase));
+
+            return Task.FromResult(result.AsEnumerable());
         }
     }
 }

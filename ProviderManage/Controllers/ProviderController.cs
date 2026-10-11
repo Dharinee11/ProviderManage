@@ -21,9 +21,11 @@ namespace ProviderManagement.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetProviders()
+        public async Task<IActionResult> GetProviders(int pageNumber,
+    int pageSize)
         {
-            var providers = await _providerService.GetProvidersAsync();
+            var providers = await _providerService.GetProvidersAsync(pageNumber,
+     pageSize);
 
             return Ok(new ApiResponse<IEnumerable<ProviderResponseDto>>(
                 true,
@@ -83,6 +85,16 @@ namespace ProviderManagement.API.Controllers
                 true,
                 "Provider deleted successfully",
                 null));
+        }
+        [HttpGet("search")]
+        public async Task<IActionResult> Search(
+    string providerName)
+        {
+            var result =
+                await _providerService.SearchProvidersAsync(
+                    providerName);
+
+            return Ok(result);
         }
     }
 }
