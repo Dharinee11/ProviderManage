@@ -5,29 +5,73 @@ namespace ProviderManage.Repositories
 {
     public class ProviderRepository : IProviderRepository
     {
-        private static readonly List<Provider> Providers =
-        [
-            new Provider
-            {
-                Id = 1,
-                ProviderName = "Apollo Hospital",
-                Email = "apollo@test.com",
-                City = "Ahmedabad",
-                IsActive = true
-            },
-            new Provider
-            {
-                Id = 2,
-                ProviderName = "Care Hospital",
-                Email = "care@test.com",
-                City = "Surat",
-                IsActive = true
-            }
-        ];
-
-        public IEnumerable<Provider> GetAllProviders()
+        private static readonly List<Provider> _providers = new()
+    {
+        new Provider
         {
-            return Providers;
+            ProviderId = 1,
+            ProviderName = "Provider One",
+            Email = "provider1@test.com",
+            PhoneNumber = "9876543210",
+            Address = "Ahmedabad"
+        },
+        new Provider
+        {
+            ProviderId = 2,
+            ProviderName = "Provider Two",
+            Email = "provider2@test.com",
+            PhoneNumber = "9876543211",
+            Address = "Vadodara"
+        }
+    };
+
+        public Task<IEnumerable<Provider>> GetAllAsync()
+        {
+            return Task.FromResult(_providers.AsEnumerable());
+        }
+
+        public Task<Provider?> GetByIdAsync(int providerId)
+        {
+            return Task.FromResult(
+                _providers.FirstOrDefault(x => x.ProviderId == providerId));
+        }
+
+        public Task<int> CreateAsync(Provider provider)
+        {
+            provider.ProviderId = _providers.Max(x => x.ProviderId) + 1;
+
+            _providers.Add(provider);
+
+            return Task.FromResult(provider.ProviderId);
+        }
+
+        public Task UpdateAsync(Provider provider)
+        {
+            var existing = _providers.FirstOrDefault(
+                x => x.ProviderId == provider.ProviderId);
+
+            if (existing != null)
+            {
+                existing.ProviderName = provider.ProviderName;
+                existing.Email = provider.Email;
+                existing.PhoneNumber = provider.PhoneNumber;
+                existing.Address = provider.Address;
+            }
+
+            return Task.CompletedTask;
+        }
+
+        public Task DeleteAsync(int providerId)
+        {
+            var provider =
+                _providers.FirstOrDefault(x => x.ProviderId == providerId);
+
+            if (provider != null)
+            {
+                _providers.Remove(provider);
+            }
+
+            return Task.CompletedTask;
         }
     }
 }
