@@ -1,4 +1,5 @@
 ﻿using ProviderManage.Models;
+using ProviderManagement.API.DTOs;
 
 namespace ProviderManage.Repositories.Interfaces
 {
@@ -10,5 +11,8 @@ namespace ProviderManage.Repositories.Interfaces
         Task<int> CreateAsync(Provider provider);
         Task UpdateAsync(Provider provider);
         Task DeleteAsync(int providerId);
+        
+    Task<IEnumerable<Provider>>
+    SearchProvidersAsync(string providerName);
     }
 }

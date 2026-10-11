@@ -1,7 +1,9 @@
+using ProviderManage.Common;
 using ProviderManage.Repositories;
 using ProviderManage.Repositories.Interfaces;
 using ProviderManage.Services;
 using ProviderManage.Services.Interfaces;
+using ProviderManagement.API.DTOs;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,14 +12,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddScoped<IProviderRepository,
                            ProviderRepository>();
 builder.Services.AddScoped<IProviderService,
                            ProviderService>();
 var app = builder.Build();
-
+app.UseMiddleware<ExceptionMiddleware>();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

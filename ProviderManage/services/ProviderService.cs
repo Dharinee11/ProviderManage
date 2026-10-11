@@ -19,7 +19,8 @@ namespace ProviderManage.Services
                 _logger = logger;
             }
 
-            public async Task<IEnumerable<ProviderResponseDto>> GetProvidersAsync()
+            public async Task<IEnumerable<ProviderResponseDto>> GetProvidersAsync(int pageNumber,
+    int pageSize)
             {
                 _logger.LogInformation("Fetching all providers");
 
@@ -91,5 +92,21 @@ namespace ProviderManage.Services
 
                 await _providerRepository.DeleteAsync(providerId);
             }
+        public async Task<IEnumerable<ProviderResponseDto>>
+    SearchProvidersAsync(string providerName)
+        {
+            var providers = await _providerRepository
+                .SearchProvidersAsync(providerName);
+
+            return providers.Select(x => new ProviderResponseDto
+            {
+                ProviderId = x.ProviderId,
+                ProviderName = x.ProviderName,
+                Email = x.Email,
+                PhoneNumber = x.PhoneNumber,
+                Address = x.Address,
+                CreatedDate = x.CreatedDate
+            });
         }
+    }
     }
