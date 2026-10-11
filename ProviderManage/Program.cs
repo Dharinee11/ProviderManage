@@ -3,6 +3,7 @@ using ProviderManage.Repositories.Interfaces;
 using ProviderManage.Services;
 using ProviderManage.Services.Interfaces;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -12,10 +13,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IProviderRepository,
-    ProviderRepository>();
-
+                           ProviderRepository>();
 builder.Services.AddScoped<IProviderService,
-    ProviderService>();
+                           ProviderService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
